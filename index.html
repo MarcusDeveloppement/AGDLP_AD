@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projet Active Directory - AGDLP</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Projet : Mise en place Active Directory avec AGDLP</h1>
+
+      <h2>Introduction : Pourquoi utiliser AGDLP dans Active Directory ?</h2>
+      <p>
+        Lorsqu'une entreprise utilise un Active Directory sans organisation
+        précise, la gestion des accès aux ressources devient rapidement complexe
+        et risquée. En attribuant des droits directement aux utilisateurs sur
+        les dossiers ou ressources, on se retrouve avec :
+      </p>
+      <ul>
+        <li>Une mauvaise visibilité sur qui a accès à quoi,</li>
+        <li>
+          Un risque élevé d'erreurs humaines lors des changements d'équipe,
+        </li>
+        <li>
+          Un effort administratif énorme pour déplacer un utilisateur d'un
+          service à un autre,
+        </li>
+        <li>
+          Une architecture difficile à maintenir à long terme, notamment lors
+          d'audits de sécurité.
+        </li>
+      </ul>
+
+      <p>
+        Pour résoudre ces problèmes, Microsoft recommande d'utiliser une méthode
+        structurée appelée <strong>AGDLP</strong>, qui est un standard
+        d'organisation des droits dans un Active Directory.
+      </p>
+
+      <h3>Que signifie AGDLP ?</h3>
+      <ul>
+        <li>
+          <strong>A - Accounts :</strong> Les comptes utilisateurs individuels
+          créés dans Active Directory.
+        </li>
+        <li>
+          <strong>G - Global Groups :</strong> Les utilisateurs sont regroupés
+          par métier ou fonction dans des Groupes Globaux (ex : Marketing,
+          Technique, Comptabilité).
+        </li>
+        <li>
+          <strong>DL - Domain Local Groups :</strong> Ces Groupes Locaux de
+          Domaine sont liés aux ressources (dossiers partagés, imprimantes) et
+          reçoivent les permissions directement.
+        </li>
+        <li>
+          <strong>P - Permissions :</strong> Les droits d'accès sont attribués
+          uniquement aux Groupes Locaux, jamais directement aux utilisateurs ou
+          aux Groupes Globaux.
+        </li>
+      </ul>
+
+      <h3>Pourquoi mettre en place AGDLP ?</h3>
+      <p>
+        Le modèle AGDLP permet d’atteindre plusieurs objectifs critiques en
+        entreprise :
+      </p>
+      <ul>
+        <li>
+          <strong>Sécurité :</strong> Limiter l'attribution directe des
+          permissions garantit que seuls les bons groupes peuvent accéder aux
+          ressources.
+        </li>
+        <li>
+          <strong>Simplicité :</strong> Pour donner ou retirer un accès, il
+          suffit d'ajouter ou retirer un utilisateur d'un Groupe Global, sans
+          toucher aux permissions NTFS directement.
+        </li>
+        <li>
+          <strong>Maintenabilité :</strong> Lors de restructurations, de départs
+          ou d'arrivées d'employés, les modifications sont rapides et sûres.
+        </li>
+        <li>
+          <strong>Auditabilité :</strong> En cas d'audit de sécurité, il est
+          plus facile de prouver qui a accès à quoi via l'analyse des groupes.
+        </li>
+        <li>
+          <strong>Scalabilité :</strong> Cette approche fonctionne aussi bien
+          dans les petites structures que dans les grandes entreprises
+          multi-sites.
+        </li>
+      </ul>
+
+      <h3>Exemple concret sans AGDLP :</h3>
+      <p>
+        Dans une entreprise sans AGDLP, un utilisateur aurait reçu directement
+        des droits sur plusieurs dossiers. À son départ ou à son changement de
+        poste, il faudrait retrouver manuellement toutes les permissions
+        attribuées, ce qui est long, dangereux et source d'oublis.
+      </p>
+
+      <h3>Exemple concret avec AGDLP :</h3>
+      <p>
+        L'utilisateur appartient à un Groupe Global lié à son métier. Ce groupe
+        est membre d'un Groupe Local qui possède les permissions sur les
+        ressources. En cas de changement, il suffit simplement de retirer
+        l'utilisateur du groupe Global : il perd automatiquement tous ses accès
+        de manière propre et contrôlée.
+      </p>
+
+      <p>
+        Ce projet a donc pour but de mettre en place une infrastructure Active
+        Directory respectant le modèle AGDLP, afin d'assurer une gestion
+        optimale, sécurisée et évolutive des ressources de l'entreprise.
+      </p>
+
+      <h2>Présentation générale du projet</h2>
+      <p>
+        J'ai construit une infrastructure complète Active Directory sous VMware.
+        L'objectif était de mettre en œuvre une organisation professionnelle
+        utilisant la méthode AGDLP pour sécuriser les ressources réseau.
+      </p>
+
+      <h2>1. Installation et configuration réseau</h2>
+      <p>
+        Après l'installation des systèmes Windows Server 2025 et Windows 10,
+        j'ai configuré les adresses IP fixes, la passerelle, et défini le
+        serveur lui-même comme serveur DNS pour l'ensemble du domaine.
+      </p>
+      <p class="hover-zone">Voir la configuration IP et DNS</p>
+      <img src="AccesUser.png" alt="Configuration IP" class="hover-image" />
+
+      <h2>2. Installation de l'Active Directory et promotion du serveur</h2>
+      <p>
+        J'ai installé le rôle AD DS ainsi que DNS, puis promu le serveur en tant
+        que Contrôleur de Domaine pour créer le domaine
+        <strong>marctech.fr</strong>.
+      </p>
+      <p class="hover-zone">Voir l'installation AD</p>
+      <img
+        src="AddDroitsFolder.png"
+        alt="Installation AD"
+        class="hover-image"
+      />
+
+      <h2>3. Création des OU et des utilisateurs</h2>
+      <p>
+        J'ai organisé Active Directory en créant plusieurs OU (Unité
+        d'Organisation) par service et ajouté les utilisateurs correspondants
+        dans chaque service.
+      </p>
+      <p class="hover-zone">Voir la création des utilisateurs</p>
+      <img src="userAD.png" alt="Utilisateurs AD" class="hover-image" />
+
+      <h2>4. Ajout d'un disque supplémentaire pour les partages</h2>
+      <p>
+        Un second disque a été ajouté sur le serveur pour héberger les
+        ressources partagées de manière structurée dans un dossier sécurisé
+        <strong>Partages$</strong>.
+      </p>
+      <p class="hover-zone">Voir la gestion du disque</p>
+      <img src="newDisk.png" alt="Nouveau disque" class="hover-image" />
+
+      <h2>5. Création des Groupes (GL et DL)</h2>
+      <p>
+        J'ai créé des Groupes Globaux pour chaque service et des Groupes Locaux
+        pour attribuer les permissions sur les ressources partagées.
+      </p>
+      <p class="hover-zone">Voir la création des groupes GL et DL</p>
+      <img src="creaDL.png" alt="Groupes DL" class="hover-image" />
+      <img src="CreationGL.png" alt="Groupes GL" class="hover-image" />
+
+      <h2>6. Mise en place des partages réseau</h2>
+      <p>
+        Afin de sécuriser et d'organiser les ressources partagées, j'ai
+        configuré des partages avancés sur le second disque. J'ai créé un
+        dossier principal nommé <strong>Partages$</strong>.
+      </p>
+      <p>
+        Le signe <strong>$</strong> à la fin du nom du dossier signifie que le
+        partage est <strong>caché</strong> : il n'apparaît pas dans la liste des
+        partages réseau visibles par défaut. Pour y accéder, il est nécessaire
+        de connaître et de saisir directement le chemin complet dans
+        l'explorateur, par exemple <em>\\nom-du-serveur\Partages$</em>.
+      </p>
+      <p>
+        Cette technique améliore la confidentialité des partages en empêchant
+        les utilisateurs de naviguer librement dans les ressources réseau sans
+        autorisation.
+      </p>
+      <p class="hover-zone">Voir la configuration du partage</p>
+      <img
+        src="AddPartageAvancé.png"
+        alt="Partage avancé"
+        class="hover-image"
+      />
+
+      <h2>7. Attribution des droits NTFS</h2>
+      <p>
+        Les permissions sur les dossiers partagés ont été appliquées
+        exclusivement aux Groupes Locaux, respectant les meilleures pratiques
+        AGDLP.
+      </p>
+      <p class="hover-zone">Voir l'attribution des droits</p>
+      <img
+        src="AddDroitsUser.png"
+        alt="Droits utilisateurs"
+        class="hover-image"
+      />
+
+      <h2>8. Tests utilisateurs et validation</h2>
+      <p>
+        En testant les connexions avec différents utilisateurs, j'ai validé que
+        chacun ne voyait que les ressources autorisées selon son service,
+        confirmant la bonne application de la méthode AGDLP.
+      </p>
+      <p class="hover-zone">Voir les tests utilisateurs</p>
+      <img
+        src="NoAccessPermission.png"
+        alt="Test utilisateurs"
+        class="hover-image"
+      />
+
+      <h2>Conclusion</h2>
+      <p>
+        Ce projet m'a permis de mettre en œuvre une infrastructure sécurisée et
+        évolutive basée sur Active Directory. La méthode AGDLP apporte une
+        réelle simplification de la gestion des accès tout en respectant les
+        standards professionnels de sécurité réseau.
+      </p>
+    </div>
+  </body>
+</html>
