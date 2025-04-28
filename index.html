@@ -10,7 +10,7 @@
     <div class="container">
       <h1>Projet : Mise en place Active Directory avec AGDLP</h1>
 
-      <h2>Introduction : Pourquoi utiliser AGDLP dans Active Directory ?</h2>
+      <h2>Pourquoi utiliser AGDLP dans Active Directory ?</h2>
       <p>
         Lorsqu'une entreprise utilise un Active Directory sans organisation
         précise, la gestion des accès aux ressources devient rapidement complexe
@@ -33,9 +33,9 @@
       </ul>
 
       <p>
-        Pour résoudre ces problèmes, Microsoft recommande d'utiliser une méthode
-        structurée appelée <strong>AGDLP</strong>, qui est un standard
-        d'organisation des droits dans un Active Directory.
+        Pour résoudre ces problèmes,<strong> Microsoft </strong>recommande
+        d'utiliser une méthode structurée appelée <strong>AGDLP</strong>, qui
+        est un standard d'organisation des droits dans un Active Directory.
       </p>
 
       <h3>Que signifie AGDLP ?</h3>
@@ -92,7 +92,7 @@
         </li>
       </ul>
 
-      <h3>Exemple concret sans AGDLP :</h3>
+      <h3>Exemple structure sans AGDLP :</h3>
       <p>
         Dans une entreprise sans AGDLP, un utilisateur aurait reçu directement
         des droits sur plusieurs dossiers. À son départ ou à son changement de
@@ -100,7 +100,7 @@
         attribuées, ce qui est long, dangereux et source d'oublis.
       </p>
 
-      <h3>Exemple concret avec AGDLP :</h3>
+      <h3>Exemple structure avec AGDLP :</h3>
       <p>
         L'utilisateur appartient à un Groupe Global lié à son métier. Ce groupe
         est membre d'un Groupe Local qui possède les permissions sur les
@@ -124,17 +124,60 @@
 
       <h2>1. Installation et configuration réseau</h2>
       <p>
-        Après l'installation des systèmes Windows Server 2025 et Windows 10,
-        j'ai configuré les adresses IP fixes, la passerelle, et défini le
-        serveur lui-même comme serveur DNS pour l'ensemble du domaine.
+        Après l'installation des systèmes Windows Server 2025 pour l'AD et
+        Windows 10 comme client, j'ai configuré les adresses IP fixes, la
+        passerelle, et défini le serveur lui-même comme serveur DNS pour
+        l'ensemble du domaine.
       </p>
 
       <h2>2. Installation de l'Active Directory et promotion du serveur</h2>
       <p>
-        J'ai installé le rôle AD DS ainsi que DNS, puis promu le serveur en tant
-        que Contrôleur de Domaine pour créer le domaine
-        <strong>marctech.fr</strong>.
+        Après avoir installé Windows Server, j'ai ajouté le rôle
+        <strong>Active Directory Domain Services (AD DS)</strong>. Lors de cette
+        étape, j'ai également installé le rôle <strong>DNS Server</strong> car
+        un domaine Active Directory nécessite impérativement un serveur DNS
+        interne pour fonctionner correctement.
       </p>
+
+      <p>
+        J'ai ensuite promu le serveur en tant que
+        <strong>Contrôleur de Domaine</strong> pour créer le domaine
+        <strong>marctech.fr</strong>. Pour assurer la résolution des noms
+        internes au domaine, j'ai configuré l'adresse IP du serveur lui-même
+        comme serveur DNS principal, aussi bien sur le serveur que sur les
+        futurs postes clients.
+      </p>
+
+      <p>
+        En effet, Active Directory s'appuie sur son propre serveur DNS pour :
+      </p>
+      <ul>
+        <li>
+          Permettre aux postes clients de localiser le contrôleur de domaine via
+          des enregistrements spécifiques (SRV),
+        </li>
+        <li>
+          Gérer les services critiques d'authentification comme LDAP et
+          Kerberos,
+        </li>
+        <li>
+          Garantir la bonne réplication entre contrôleurs de domaine (dans un
+          environnement multi-DC),
+        </li>
+        <li>
+          Éviter toute dépendance à un DNS externe qui ne connaîtrait pas
+          l'existence du domaine interne (<strong>marctech.fr</strong>).
+        </li>
+      </ul>
+
+      <p>
+        Le fait que le serveur Active Directory agisse également comme serveur
+        DNS permet donc de rendre l'infrastructure totalement autonome, fiable
+        et sécurisée. Cela est indispensable pour garantir le bon fonctionnement
+        du domaine, des connexions utilisateurs et des stratégies de groupe
+        (GPO).
+      </p>
+
       <p class="hover-zone">Voir l'installation AD</p>
       <img src="/img/instalAD.webp" alt="Installation AD" class="hover-image" />
 
@@ -149,9 +192,27 @@
 
       <h2>4. Ajout d'un disque supplémentaire pour les partages</h2>
       <p>
-        Un second disque a été ajouté sur le serveur pour héberger les
-        ressources partagées de manière structurée dans un dossier sécurisé
-        <strong>Partages$</strong>.
+        Afin de respecter les bonnes pratiques d'administration système, j'ai
+        ajouté un second disque dur sur le serveur. L'objectif est d'éviter
+        d'utiliser le disque système <strong>C:</strong> pour héberger les
+        ressources partagées, afin de :
+      </p>
+      <ul>
+        <li>Préserver les performances du système d'exploitation,</li>
+        <li>
+          Éviter un risque de saturation du disque système en cas de croissance
+          des données utilisateurs,
+        </li>
+        <li>
+          Faciliter les opérations de sauvegarde et de restauration (le volume
+          de données est séparé du système),
+        </li>
+        <li>Améliorer la gestion et l'organisation du stockage.</li>
+      </ul>
+      <p>
+        Sur ce second disque (<strong>E:</strong>), j'ai créé un dossier
+        principal sécurisé nommé <strong>Partages</strong>, destiné à regrouper
+        l'ensemble des dossiers de service (Marketing, Compta, Technique, etc.).
       </p>
       <p class="hover-zone">Voir la gestion du disque</p>
       <img src="img/newDisk.webp" alt="Nouveau disque" class="hover-image" />
