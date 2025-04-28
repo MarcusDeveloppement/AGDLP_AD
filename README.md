@@ -78,6 +78,5 @@ Avec AGDLP, les utilisateurs sont ajoutés dans des Groupes Globaux, qui eux-mê
 
 ## Auteur
 
-**Projet réalisé par :** Marc Khamchanh
-**Date :** 27/04/2025  
-**Contexte :** Projet personnel de mise en pratique des infrastructures Active Directory & Sécurité réseau.
+Projet réalisé par **Marc.Khamchanh**
+Avril 2025 – Dans le cadre d’un projet personnel en administration système et réseau.
