@@ -4,7 +4,7 @@
 
 Créer une infrastructure Active Directory sous environnement virtualisé (VMware) en appliquant la méthode AGDLP afin de structurer la gestion des accès aux ressources réseau de manière professionnelle, sécurisée et évolutive.
 
-## 🛠 Technologies utilisées
+## Technologies utilisées
 
 - VMware Workstation
 - Windows Server 2025 (Active Directory)
@@ -78,6 +78,6 @@ Avec AGDLP, les utilisateurs sont ajoutés dans des Groupes Globaux, qui eux-mê
 
 ## Auteur
 
-\*Projet réalisé par :** [Marc Khamchanh]  
+**Projet réalisé par :** Marc Khamchanh
 **Date :** 27/04/2025  
-**Contexte :\*\* Projet personnel de mise en pratique des infrastructures Active Directory & Sécurité réseau.
+**Contexte :** Projet personnel de mise en pratique des infrastructures Active Directory & Sécurité réseau.
